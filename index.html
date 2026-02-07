@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Participant Data Management</title>
+    <script src="https://apis.google.com/js/api.js"></script>
+</head>
+<body>
+    <h1>Participant Data Management</h1>
+    <form id="participantForm">
+        <input type="text" name="nume" placeholder="Nume" required>
+        <input type="text" name="prenume" placeholder="Prenume" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="tel" name="telefon" placeholder="Telefon" required>
+        <input type="date" name="dataNasterii" placeholder="Data Nasterii" required>
+        <input type="text" name="adresa" placeholder="Adresa" required>
+        <input type="text" name="oras" placeholder="Oras" required>
+        <input type="text" name="judet" placeholder="Judet" required>
+        <input type="text" name="codPostal" placeholder="Cod Postal" required>
+        <input type="text" name="tara" placeholder="Tara" required>
+        <input type="text" name="ocupatie" placeholder="Ocupatie">
+        <input type="text" name="companie" placeholder="Companie">
+        <button type="submit">Submit</button>
+    </form>
+
+    <h2>Search Participants</h2>
+    <input type="text" id="searchInput" placeholder="Search...">
+    <button id="searchButton">Search</button>
+    
+    <!-- Add your Google Sheets integration script here -->
+
+    <script>
+        // Google Sheets API integration code goes here
+
+        document.getElementById('participantForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Add code to submit data to Google Sheets
+        });
+
+        document.getElementById('searchButton').addEventListener('click', function() {
+            const query = document.getElementById('searchInput').value;
+            // Add code to filter/search participant data based on input
+        });
+    </script>
+</body>
+</html>
