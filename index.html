@@ -3,45 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Participant Data Management</title>
+    <title>Participants Management</title>
     <script src="https://apis.google.com/js/api.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #dddddd; text-align: left; padding: 8px; }
+        th { background-color: #f2f2f2; }
+    </style>
 </head>
 <body>
-    <h1>Participant Data Management</h1>
-    <form id="participantForm">
+    <h1>Participants Management</h1>
+    <form id="participant-form">
         <input type="text" name="nume" placeholder="Nume" required>
         <input type="text" name="prenume" placeholder="Prenume" required>
         <input type="email" name="email" placeholder="Email" required>
-        <input type="tel" name="telefon" placeholder="Telefon" required>
-        <input type="date" name="dataNasterii" placeholder="Data Nasterii" required>
-        <input type="text" name="adresa" placeholder="Adresa" required>
-        <input type="text" name="oras" placeholder="Oras" required>
-        <input type="text" name="judet" placeholder="Judet" required>
-        <input type="text" name="codPostal" placeholder="Cod Postal" required>
-        <input type="text" name="tara" placeholder="Tara" required>
+        <input type="text" name="telefon" placeholder="Telefon">
+        <input type="date" name="data_nasterii" placeholder="Data Nasterii">
+        <input type="text" name="adresa" placeholder="Adresa">
+        <input type="text" name="oras" placeholder="Oras">
+        <input type="text" name="judet" placeholder="Judet">
+        <input type="text" name="cod_postal" placeholder="Cod Postal">
+        <input type="text" name="tara" placeholder="Tara">
         <input type="text" name="ocupatie" placeholder="Ocupatie">
         <input type="text" name="companie" placeholder="Companie">
-        <button type="submit">Submit</button>
+        <button type="submit">Adauga Participant</button>
     </form>
-
-    <h2>Search Participants</h2>
-    <input type="text" id="searchInput" placeholder="Search...">
-    <button id="searchButton">Search</button>
-    
-    <!-- Add your Google Sheets integration script here -->
+    <input type="text" id="search" placeholder="Search participants..." onkeyup="filterTable()" style="margin-top: 20px;">
+    <table id="participants-table">
+        <thead>
+            <tr>
+                <th>Nume</th>
+                <th>Prenume</th>
+                <th>Email</th>
+                <th>Telefon</th>
+                <th>Data Nasterii</th>
+                <th>Adresa</th>
+                <th>Oras</th>
+                <th>Judet</th>
+                <th>Cod Postal</th>
+                <th>Tara</th>
+                <th>Ocupatie</th>
+                <th>Companie</th>
+            </tr>
+        </thead>
+        <tbody id="participants-body">
+            <!-- Participants will be populated here -->
+        </tbody>
+    </table>
 
     <script>
-        // Google Sheets API integration code goes here
+        const form = document.getElementById('participant-form');
+        const participantsBody = document.getElementById('participants-body');
+        const participants = [];
 
-        document.getElementById('participantForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Add code to submit data to Google Sheets
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const formData = new FormData(form);
+            const participant = {};
+            formData.forEach((value, key) => {
+                participant[key] = value;
+            });
+            participants.push(participant);
+            addToGoogleSheets(participant);
+            form.reset();
+            displayParticipants();
         });
 
-        document.getElementById('searchButton').addEventListener('click', function() {
-            const query = document.getElementById('searchInput').value;
-            // Add code to filter/search participant data based on input
-        });
+        function displayParticipants() {
+            participantsBody.innerHTML = '';
+            participants.forEach(part => {
+                const row = `<tr>` + 
+                    `<td>${part.nume}</td>` + 
+                    `<td>${part.prenume}</td>` + 
+                    `<td>${part.email}</td>` + 
+                    `<td>${part.telefon}</td>` + 
+                    `<td>${part.data_nasterii}</td>` + 
+                    `<td>${part.adresa}</td>` + 
+                    `<td>${part.oras}</td>` + 
+                    `<td>${part.judet}</td>` + 
+                    `<td>${part.cod_postal}</td>` + 
+                    `<td>${part.tara}</td>` + 
+                    `<td>${part.ocupatie}</td>` + 
+                    `<td>${part.companie}</td>` + 
+                `</tr>`;
+                participantsBody.innerHTML += row;
+            });
+        }
+
+        function filterTable() {
+            const searchTerm = document.getElementById('search').value.toLowerCase();
+            const rows = participantsBody.getElementsByTagName('tr');
+            Array.from(rows).forEach(row => {
+                const cells = row.getElementsByTagName('td');
+                const match = Array.from(cells).some(cell => cell.textContent.toLowerCase().includes(searchTerm));
+                row.style.display = match ? '' : 'none';
+            });
+        }
+
+        function addToGoogleSheets(participant) {
+            // Here goes the Google Sheets integration code
+            console.log('Participant added to Google Sheets:', participant);
+            // Code to push participant data to Google Sheets API should go here.
+        }
     </script>
 </body>
 </html>
